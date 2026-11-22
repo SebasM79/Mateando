@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mateando - Gestor Inteligente de Rondas de Mate</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+    <!-- Encabezado Superior -->
+    <header class="app-header">
+        <div class="brand-badge" id="brand-badge" title="Ir al menú">
+            <img src="/static/images/mate-art.svg" alt="Mateando Logo">
+            <div>
+                <h1 class="brand-title">Mateando</h1>
+                <div class="brand-tagline">Rondas organizadas, mates perfectos</div>
+            </div>
+        </div>
+        <div id="user-chip" class="user-chip" style="display: none;">
+            <div id="user-chip-avatar" class="user-chip-avatar">C</div>
+            <span id="user-chip-name">Cebador</span>
+        </div>
+    </header>
+
+    <!-- Contenedor Principal de Pantallas -->
+    <main class="app-container">
+
+        <!-- ========================================== -->
+        <!-- PANTALLA 1: BIENVENIDA                     -->
+        <!-- ========================================== -->
+        <section id="screen-welcome" class="screen active">
+            <div class="welcome-hero">
+                <img src="/static/images/mate-art.svg" alt="Mateando" class="welcome-logo">
+                <h2 class="welcome-title">¡Bienvenido a Mateando!</h2>
+                <p class="welcome-desc">
+                    El asistente inteligente para el cebador. Nunca más te olvides a quién le toca el mate, 
+                    controla los tiempos para que nadie se duerma y gestiona quién se baja de la ronda.
+                </p>
+
+                <div class="welcome-buttons">
+                    <button type="button" id="btn-first-time" class="btn-apple">
+                        <span>✨ Ingresas por primera vez</span>
+                    </button>
+                    <button type="button" id="btn-ready-mate" class="btn-apple">
+                        <span>🧉 Estoy para tomar un mate</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- PANTALLA 2: REGISTRO / AUTENTICACIÓN       -->
+        <!-- ========================================== -->
+        <section id="screen-register" class="screen">
+            <h2 class="welcome-title" style="text-align: center; margin-bottom: 6px;">Crear tu Perfil</h2>
+            <p class="welcome-desc" style="text-align: center; margin-bottom: 20px;">
+                Personaliza tu experiencia de cebador o conéctate al instante.
+            </p>
+
+            <form id="form-register">
+                <div class="form-group">
+                    <label for="reg-name" class="form-label">Nombre completo</label>
+                    <input type="text" id="reg-name" class="form-input" placeholder="Ej: Sebastián" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="reg-age" class="form-label">Edad (opcional)</label>
+                    <input type="number" id="reg-age" class="form-input" placeholder="Ej: 28" min="1" max="120">
+                </div>
+
+                <div class="form-group">
+                    <label for="reg-username" class="form-label">Nombre de usuario</label>
+                    <input type="text" id="reg-username" class="form-input" placeholder="Ej: cebador_master" required>
+                </div>
+
+                <button type="submit" class="btn-apple" style="margin-top: 10px;">
+                    <span>Crear Usuario y Continuar</span>
+                </button>
+            </form>
+
+            <div class="auth-divider">O TAMBIÉN</div>
+
+            <button type="button" id="btn-google-login" class="btn-google">
+                <svg viewBox="0 0 48 48">
+                    <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                    <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                    <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                    <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                </svg>
+                <span>Continuar con Google</span>
+            </button>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- PANTALLA 3: MENÚ DE RONDAS                 -->
+        <!-- ========================================== -->
+        <section id="screen-menu" class="screen">
+            <h2 class="welcome-title" style="text-align: center;">¿Cómo tomamos hoy?</h2>
+            <p class="welcome-desc" style="text-align: center;">
+                Selecciona la modalidad para comenzar a cebar la ronda.
+            </p>
+
+            <div class="menu-options">
+                <button type="button" id="btn-menu-nueva-ronda" class="btn-apple menu-card-btn">
+                    <div class="card-content">
+                        <span class="card-title">Nueva ronda</span>
+                        <span class="card-sub">Configura participantes, frecuencias y tiempo de alarma</span>
+                    </div>
+                    <span class="menu-icon">➕</span>
+                </button>
+
+                <button type="button" id="btn-menu-ronda-guardada" class="btn-apple menu-card-btn">
+                    <div class="card-content">
+                        <span class="card-title">Ronda guardada</span>
+                        <span class="card-sub">Carga tus grupos frecuentes de amigos, familia o trabajo</span>
+                    </div>
+                    <span class="menu-icon">📁</span>
+                </button>
+
+                <button type="button" id="btn-menu-ronda-rapida" class="btn-apple menu-card-btn">
+                    <div class="card-content">
+                        <span class="card-title">Ronda rápida</span>
+                        <span class="card-sub">Comienza al instante solo por esta vez sin configuraciones previas</span>
+                    </div>
+                    <span class="menu-icon">⚡</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- PANTALLA 4: CONFIGURACIÓN DE RONDA         -->
+        <!-- ========================================== -->
+        <section id="screen-config" class="screen">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--green-dark);">Configurar Ronda</h2>
+                <button type="button" id="btn-config-back" class="btn-secondary" style="width: auto; padding: 6px 12px; font-size: 0.85rem;">← Volver</button>
+            </div>
+
+            <!-- Sección Participantes -->
+            <div class="config-section">
+                <div class="participants-header">
+                    <span class="config-section-title">👥 Participantes de la Ronda</span>
+                    <button type="button" id="btn-add-participant" class="btn-add-person">+ Agregar persona</button>
+                </div>
+                <div id="participants-container">
+                    <!-- Se llena dinámicamente con JS -->
+                </div>
+                <p style="font-size: 0.78rem; color: var(--text-muted); margin-top: 6px;">
+                    💡 Marca quién es el cebador y ajusta si alguien toma salteado (ej. toma 1 vuelta y saltea la siguiente).
+                </p>
+            </div>
+
+            <!-- Sección Reglas y Tiempos -->
+            <div class="config-section">
+                <div class="config-section-title">⏱️ Alarma y Forma de Entrega</div>
+                
+                <div class="form-group">
+                    <label for="config-alarm-time" class="form-label">
+                        Tiempo máximo antes de que suene la alarma (minutos)
+                    </label>
+                    <select id="config-alarm-time" class="form-select">
+                        <option value="0.166">10 segundos (Modo prueba rápida)</option>
+                        <option value="0.5">30 segundos</option>
+                        <option value="1" selected>1 minuto (Recomendado)</option>
+                        <option value="1.5">1 minuto y medio</option>
+                        <option value="2">2 minutos</option>
+                        <option value="3">3 minutos</option>
+                        <option value="5">5 minutos</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="config-delivery-mode" class="form-label">Forma de entrega del mate</label>
+                    <select id="config-delivery-mode" class="form-select">
+                        <option value="circle" selected>En círculo (Secuencial tradicional)</option>
+                        <option value="random">Aleatorio (Sin repetir en la ronda hasta que todos tomen)</option>
+                    </select>
+                </div>
+
+                <!-- Sonido de Alarma -->
+                <div class="form-group">
+                    <label for="config-alarm-sound" class="form-label">Sonido de la alarma</label>
+                    <div style="display: flex; gap: 8px;">
+                        <select id="config-alarm-sound" class="form-select" style="flex: 1;">
+                            <option value="pava" selected>🫖 Silbido de pava hirviendo (Tradicional)</option>
+                            <option value="campana">🔔 Campanilla rítmica de cocina</option>
+                        </select>
+                        <button type="button" id="btn-preview-sound" class="btn-secondary" style="width: auto; padding: 10px 14px; white-space: nowrap;" title="Escuchar sonido">
+                            🔊 Probar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Capacidad del Termo -->
+                <div class="form-group">
+                    <label for="config-termo-capacity" class="form-label">Capacidad de agua del termo</label>
+                    <select id="config-termo-capacity" class="form-select">
+                        <option value="10" selected>1 Litro (~10 mates)</option>
+                        <option value="15">1.5 Litros (~15 mates)</option>
+                        <option value="20">2 Litros (~20 mates)</option>
+                        <option value="0">Sin límite de termo (Agua infinita)</option>
+                    </select>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.9rem; font-weight: 600; color: var(--green-dark);">
+                        <input type="checkbox" id="config-save-checkbox" style="accent-color: var(--green-apple); width: 18px; height: 18px;">
+                        <span>Guardar esta ronda para volver a usarla otro día</span>
+                    </label>
+                    <input type="text" id="config-group-name" class="form-input" placeholder="Nombre del grupo (ej. Los del Laburo)" style="margin-top: 8px;">
+                </div>
+            </div>
+
+            <!-- Botón Empezar a Cebar -->
+            <button type="button" id="btn-start-cebada" class="btn-apple btn-huge">
+                <span>🚀 Empezar a Cebar</span>
+            </button>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- PANTALLA 5: INICIO DE CEBADA / RONDA ACTIVA-->
+        <!-- ========================================== -->
+        <section id="screen-cebada" class="screen">
+            <!-- Header de la Sesión -->
+            <div class="active-cebada-header">
+                <div>
+                    <div id="active-round-label" class="round-info-title">Ronda #1</div>
+                    <div id="active-total-mates" class="round-info-sub">🧉 0 mates servidos</div>
+                </div>
+                <button type="button" id="btn-toggle-sound" class="stats-pill" style="border: none; cursor: pointer; color: white;">
+                    🔊 Alarma Activa
+                </button>
+            </div>
+
+            <!-- Widget Nivel del Termo / Agua Caliente -->
+            <div id="termo-widget" class="termo-card-widget">
+                <div class="termo-info-group">
+                    <span class="termo-icon-badge">🫖</span>
+                    <div class="termo-text-group">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span class="termo-title">Agua del Termo</span>
+                            <span id="termo-mates-left-label" style="font-size: 0.8rem; font-weight: 700; color: var(--green-accent);">10/10 mates</span>
+                        </div>
+                        <div class="termo-gauge-bar">
+                            <div id="termo-gauge-fill" class="termo-gauge-fill" style="width: 100%;"></div>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" id="btn-refill-termo" class="btn-refill-termo" title="Recargar agua caliente">
+                    <span>🚰 Recargar</span>
+                </button>
+            </div>
+
+            <!-- Tarjeta Principal del Turno -->
+            <div class="current-turn-card">
+                <span class="turn-tag">Turno Actual</span>
+                <div id="current-drinker-name" class="current-drinker-name">Jorge</div>
+                <div id="current-drinker-role" class="turn-role-badge">Tomador en la ronda</div>
+
+                <!-- Cronómetro / Alarma Visual -->
+                <div id="timer-container" class="timer-container">
+                    <div id="timer-digits" class="timer-digits">01:00</div>
+                    <div class="timer-label">Tiempo con el mate antes de la alarma</div>
+                    <div class="timer-progress-bar">
+                        <div id="timer-progress-fill" class="timer-progress-fill"></div>
+                    </div>
+                </div>
+
+                <!-- Botones Principales de Acción para el Cebador -->
+                <div class="cebada-actions">
+                    <button type="button" id="btn-deliver-mate" class="btn-apple btn-huge">
+                        <span class="btn-text">Entregar mate a Jorge</span>
+                    </button>
+
+                    <button type="button" id="btn-receive-mate" class="btn-apple btn-huge" style="display: none;">
+                        <span class="btn-text">Recibí mate</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Lista de Participantes con Botón "No quiero más" -->
+            <div class="roster-card">
+                <div class="roster-title">
+                    <span>Participantes en esta Ronda</span>
+                    <small style="font-weight: 500; font-size: 0.8rem; color: var(--text-muted);">
+                        Toca "No quiero más" para anularlo
+                    </small>
+                </div>
+                <ul id="active-roster-list" class="roster-list">
+                    <!-- Se genera dinámicamente con JS -->
+                </ul>
+            </div>
+
+            <!-- Botón Finalizar Mateada -->
+            <div style="margin-top: 20px;">
+                <button type="button" id="btn-finish-mateada" class="btn-secondary" style="color: var(--red-alert); border-color: #f1aeb5;">
+                    🏁 Finalizar Mateada
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ========================================== -->
+    <!-- MODAL: RONDAS GUARDADAS                    -->
+    <!-- ========================================== -->
+    <div id="modal-saved-groups" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">📁 Rondas Guardadas</h3>
+                <button type="button" id="btn-close-saved-modal" class="btn-close-modal">&times;</button>
+            </div>
+            <div id="saved-groups-list">
+                <!-- Se puebla con JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- MODAL: RESUMEN DE MATEADA FINALIZADA        -->
+    <!-- ========================================== -->
+    <div id="modal-summary" class="modal-overlay">
+        <div class="modal-content" style="text-align: center;">
+            <div class="modal-header">
+                <h3 class="modal-title">🏆 ¡Mateada Finalizada!</h3>
+                <button type="button" id="btn-close-summary-modal" class="btn-close-modal">&times;</button>
+            </div>
+
+            <div style="font-size: 2.8rem; margin: 10px 0;">🧉✨</div>
+            <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 20px;">
+                ¡Excelente ronda de mates! Aquí están los resultados de la sesión:
+            </p>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 20px;">
+                <div style="background: var(--bg-aqua-light); padding: 12px 6px; border-radius: var(--radius-md);">
+                    <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700;">TOTAL MATES</div>
+                    <div id="summary-total-mates" style="font-size: 1.5rem; font-weight: 900; color: var(--green-dark);">0</div>
+                </div>
+                <div style="background: var(--bg-aqua-light); padding: 12px 6px; border-radius: var(--radius-md);">
+                    <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700;">RONDAS</div>
+                    <div id="summary-total-rounds" style="font-size: 1.5rem; font-weight: 900; color: var(--green-dark);">0</div>
+                </div>
+                <div style="background: var(--bg-aqua-light); padding: 12px 6px; border-radius: var(--radius-md);">
+                    <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700;">DURACIÓN</div>
+                    <div id="summary-duration" style="font-size: 1.5rem; font-weight: 900; color: var(--green-dark);">0 min</div>
+                </div>
+            </div>
+
+            <h4 style="font-size: 1rem; font-weight: 800; color: var(--green-dark); margin-bottom: 10px; text-align: left;">
+                Podio de tomadores:
+            </h4>
+            <div id="summary-ranking-list" style="margin-bottom: 24px; text-align: left;">
+                <!-- Se puebla con JS -->
+            </div>
+
+            <button type="button" class="btn-apple" onclick="document.getElementById('modal-summary').classList.remove('active'); showScreen('screen-menu');">
+                <span>Volver al Menú Principal</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Notificación Toast Flotante -->
+    <div id="toast-notice" class="toast-notice">Mensaje informativo</div>
+
+    <!-- Scripts -->
+    <script src="/static/js/sound.js"></script>
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

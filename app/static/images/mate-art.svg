@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <!-- Termo -->
+  <rect x="15" y="25" width="22" height="55" rx="6" fill="#2d6a4f" />
+  <rect x="18" y="15" width="16" height="12" rx="3" fill="#1b4332" />
+  <path d="M22 15 V10 H30 V15" stroke="#1b4332" stroke-width="2" />
+  <rect x="13" y="38" width="4" height="28" rx="2" fill="#52b788" />
+  <path d="M20 40 H32" stroke="#52b788" stroke-width="2" stroke-linecap="round" />
+  <path d="M20 50 H32" stroke="#52b788" stroke-width="2" stroke-linecap="round" />
+  <!-- Mate Calabaza -->
+  <ellipse cx="68" cy="48" rx="16" ry="6" fill="#3e1f07" />
+  <path d="M52 48 C52 75 84 75 84 48 Z" fill="#6f4e37" />
+  <path d="M54 48 C54 70 82 70 82 48 Z" fill="#8d5b4c" opacity="0.6" />
+  <!-- Yerba con espuma -->
+  <ellipse cx="68" cy="48" rx="13" ry="4" fill="#2d6a4f" />
+  <circle cx="64" cy="47" r="1.5" fill="#95d5b2" />
+  <circle cx="70" cy="48" r="1.8" fill="#95d5b2" />
+  <circle cx="67" cy="49" r="1.2" fill="#74c69d" />
+  <!-- Bombilla -->
+  <line x1="68" y1="50" x2="82" y2="15" stroke="#d8f3dc" stroke-width="4" stroke-linecap="round" />
+  <line x1="82" y1="15" x2="88" y2="12" stroke="#d8f3dc" stroke-width="3" stroke-linecap="round" />
+  <line x1="80" y1="20" x2="83" y2="23" stroke="#b7e4c7" stroke-width="2" />
+  <!-- Hoja de Yerba Decorativa -->
+  <path d="M42 75 C45 65 55 65 58 75 C55 85 45 85 42 75 Z" fill="#40916c" opacity="0.7" />
+  <line x1="43" y1="75" x2="57" y2="75" stroke="#1b4332" stroke-width="1" />
+</svg>

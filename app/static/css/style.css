@@ -1,0 +1,953 @@
+/* ==========================================================================
+   MATEANDO - ESTILOS PRINCIPALES
+   Paleta: Fondo Verde Claro Agua, Botones Verde Manzana (letras blancas),
+           Botón "No quiero más" Rojo, Adaptable a PC, Tablet y Móvil.
+   ========================================================================== */
+
+:root {
+    --bg-aqua: #d8efe9;
+    --bg-aqua-light: #eaf7f4;
+    --bg-card: rgba(255, 255, 255, 0.94);
+    --green-apple: #5ea832;
+    --green-apple-hover: #4e9127;
+    --green-apple-active: #3e751d;
+    --green-dark: #1b4332;
+    --green-accent: #2d6a4f;
+    --red-alert: #e63946;
+    --red-alert-hover: #c92a37;
+    --yellow-warning: #e9c46a;
+    --text-dark: #1f2d24;
+    --text-muted: #526b5b;
+    --border-soft: #b7ded5;
+    --shadow-soft: 0 8px 24px rgba(27, 67, 50, 0.08);
+    --shadow-button: 0 4px 14px rgba(94, 168, 50, 0.35);
+    --shadow-red: 0 4px 12px rgba(230, 57, 70, 0.3);
+    --radius-lg: 20px;
+    --radius-md: 14px;
+    --radius-sm: 8px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    min-height: 100vh;
+    background-color: var(--bg-aqua);
+    /* Imagen ambientada de mate, yerba y termo en el fondo */
+    background-image: 
+        radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.6) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(183, 222, 213, 0.5) 0%, transparent 50%),
+        url('/static/images/mate-art.svg');
+    background-repeat: no-repeat;
+    background-position: right 20px bottom 20px;
+    background-size: auto, auto, 240px;
+    background-attachment: fixed;
+    color: var(--text-dark);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 16px;
+}
+
+/* Header & Barra Superior */
+.app-header {
+    width: 100%;
+    max-width: 680px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 18px;
+    background: var(--bg-card);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-soft);
+    margin-bottom: 18px;
+}
+
+.brand-badge {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.brand-badge img {
+    width: 38px;
+    height: 38px;
+}
+
+.brand-title {
+    font-size: 1.45rem;
+    font-weight: 800;
+    color: var(--green-dark);
+    letter-spacing: -0.5px;
+}
+
+.brand-tagline {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.user-chip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg-aqua-light);
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--border-soft);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--green-accent);
+}
+
+.user-chip-avatar {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--green-apple);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+}
+
+/* Contenedor Principal de Pantallas */
+.app-container {
+    width: 100%;
+    max-width: 680px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Tarjeta / Pantalla */
+.screen {
+    background: var(--bg-card);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-soft);
+    padding: 24px 20px;
+    display: none;
+    animation: fadeIn 0.25s ease-out;
+}
+
+.screen.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Botones Verde Manzana con Letras Blancas */
+.btn-apple {
+    background: var(--green-apple);
+    color: #ffffff !important;
+    border: none;
+    padding: 14px 22px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    box-shadow: var(--shadow-button);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-decoration: none;
+    width: 100%;
+    touch-action: manipulation;
+}
+
+.btn-apple:hover {
+    background: var(--green-apple-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(94, 168, 50, 0.45);
+}
+
+.btn-apple:active {
+    background: var(--green-apple-active);
+    transform: translateY(1px);
+    box-shadow: 0 2px 8px rgba(94, 168, 50, 0.3);
+}
+
+/* Botón Rojo: "No quiero más" */
+.btn-red-drop {
+    background: var(--red-alert);
+    color: #ffffff !important;
+    border: none;
+    padding: 8px 14px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    box-shadow: var(--shadow-red);
+    transition: all 0.18s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    white-space: nowrap;
+}
+
+.btn-red-drop:hover {
+    background: var(--red-alert-hover);
+    transform: translateY(-1px);
+}
+
+.btn-red-drop:active {
+    transform: translateY(1px);
+}
+
+/* Botón Secundario / Outline */
+.btn-secondary {
+    background: #ffffff;
+    color: var(--green-dark);
+    border: 2px solid var(--border-soft);
+    padding: 12px 18px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+}
+
+.btn-secondary:hover {
+    border-color: var(--green-apple);
+    background: var(--bg-aqua-light);
+}
+
+/* Botón Google OAuth */
+.btn-google {
+    background: #ffffff;
+    color: #3c4043;
+    border: 1px solid #dadce0;
+    padding: 13px 20px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    box-shadow: 0 1px 3px rgba(60, 64, 67, 0.15);
+    transition: all 0.2s ease;
+    width: 100%;
+}
+
+.btn-google:hover {
+    background: #f8f9fa;
+    border-color: #c1c3c7;
+    box-shadow: 0 2px 6px rgba(60, 64, 67, 0.2);
+}
+
+.btn-google svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* Separador OR */
+.auth-divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 18px 0;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid var(--border-soft);
+}
+
+.auth-divider:not(:empty)::before {
+    margin-right: .75em;
+}
+
+.auth-divider:not(:empty)::after {
+    margin-left: .75em;
+}
+
+/* Pantalla 1: Bienvenida */
+.welcome-hero {
+    text-align: center;
+    padding: 20px 10px;
+}
+
+.welcome-logo {
+    width: 110px;
+    height: 110px;
+    margin: 0 auto 16px;
+    filter: drop-shadow(0 8px 16px rgba(45, 106, 79, 0.18));
+}
+
+.welcome-title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--green-dark);
+    margin-bottom: 8px;
+}
+
+.welcome-desc {
+    color: var(--text-muted);
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-bottom: 28px;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.welcome-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-width: 420px;
+    margin: 0 auto;
+}
+
+/* Formularios */
+.form-group {
+    margin-bottom: 16px;
+    text-align: left;
+}
+
+.form-label {
+    display: block;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--green-dark);
+    margin-bottom: 6px;
+}
+
+.form-input,
+.form-select {
+    width: 100%;
+    padding: 12px 14px;
+    border: 2px solid var(--border-soft);
+    border-radius: var(--radius-md);
+    font-size: 0.95rem;
+    background: #ffffff;
+    color: var(--text-dark);
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-input:focus,
+.form-select:focus {
+    border-color: var(--green-apple);
+    box-shadow: 0 0 0 3px rgba(94, 168, 50, 0.2);
+}
+
+/* Pantalla 3: Menú de Rondas */
+.menu-options {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 18px;
+}
+
+.menu-card-btn {
+    text-align: left;
+    padding: 18px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.menu-card-btn .card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.menu-card-btn .card-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+.menu-card-btn .card-sub {
+    font-size: 0.82rem;
+    opacity: 0.92;
+    font-weight: 400;
+}
+
+.menu-icon {
+    font-size: 1.8rem;
+}
+
+/* Pantalla 4: Configuración de Ronda */
+.config-section {
+    background: var(--bg-aqua-light);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    margin-bottom: 18px;
+}
+
+.config-section-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--green-dark);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.participants-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.btn-add-person {
+    background: #ffffff;
+    color: var(--green-apple);
+    border: 2px solid var(--green-apple);
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.btn-add-person:hover {
+    background: var(--green-apple);
+    color: #ffffff;
+}
+
+.participant-item {
+    background: #ffffff;
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-md);
+    padding: 12px 14px;
+    margin-bottom: 10px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 10px;
+    align-items: center;
+    transition: all 0.2s ease;
+}
+
+.participant-item:hover {
+    border-color: var(--green-apple);
+}
+
+.participant-item-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.participant-item-row2 {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.82rem;
+}
+
+.cebador-radio-label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--green-dark);
+}
+
+.cebador-radio-label input {
+    accent-color: var(--green-apple);
+}
+
+.frequency-select {
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: 1px solid var(--border-soft);
+    font-size: 0.8rem;
+    color: var(--text-dark);
+}
+
+.btn-remove-person {
+    background: transparent;
+    border: none;
+    color: #a0aab2;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    transition: color 0.2s;
+}
+
+.btn-remove-person:hover {
+    color: var(--red-alert);
+}
+
+/* Pantalla 5: Tablero de Cebada Activa */
+.active-cebada-header {
+    background: linear-gradient(135deg, #1b4332 0%, #2d6a4f 100%);
+    color: white;
+    border-radius: var(--radius-md);
+    padding: 16px 20px;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 4px 16px rgba(27, 67, 50, 0.2);
+}
+
+.round-info-title {
+    font-size: 1.35rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+.round-info-sub {
+    font-size: 0.85rem;
+    opacity: 0.85;
+}
+
+.stats-pill {
+    background: rgba(255, 255, 255, 0.18);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    backdrop-filter: blur(4px);
+}
+
+/* Tarjeta del Turno Actual */
+.current-turn-card {
+    background: #ffffff;
+    border: 3px solid var(--green-apple);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 10px 28px rgba(94, 168, 50, 0.15);
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.turn-tag {
+    display: inline-block;
+    background: var(--bg-aqua-light);
+    color: var(--green-accent);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+.current-drinker-name {
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: var(--green-dark);
+    margin-bottom: 4px;
+    line-height: 1.15;
+}
+
+.turn-role-badge {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+}
+
+/* Cronómetro y Alarma */
+.timer-container {
+    background: var(--bg-aqua-light);
+    border: 2px dashed var(--border-soft);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    margin-bottom: 18px;
+    transition: all 0.3s ease;
+}
+
+.timer-container.alarm-active {
+    background: #ffe5e7;
+    border-color: var(--red-alert);
+    border-style: solid;
+    animation: pulseAlarm 0.8s infinite alternate;
+}
+
+@keyframes pulseAlarm {
+    from { box-shadow: 0 0 12px rgba(230, 57, 70, 0.3); }
+    to { box-shadow: 0 0 26px rgba(230, 57, 70, 0.8); }
+}
+
+.timer-digits {
+    font-size: 3.2rem;
+    font-weight: 900;
+    font-family: 'Courier New', Courier, monospace;
+    color: var(--green-dark);
+    line-height: 1;
+}
+
+.timer-container.alarm-active .timer-digits {
+    color: var(--red-alert);
+}
+
+.timer-label {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    margin-top: 4px;
+}
+
+/* Barra de progreso de tiempo */
+.timer-progress-bar {
+    width: 100%;
+    height: 8px;
+    background: #e0e0e0;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+.timer-progress-fill {
+    height: 100%;
+    background: var(--green-apple);
+    width: 100%;
+    transition: width 1s linear, background-color 0.3s ease;
+}
+
+.timer-progress-fill.warning {
+    background: var(--yellow-warning);
+}
+
+.timer-progress-fill.danger {
+    background: var(--red-alert);
+}
+
+/* Botones de Acción de Cebada */
+.cebada-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.btn-huge {
+    padding: 18px 24px;
+    font-size: 1.25rem;
+    border-radius: var(--radius-md);
+}
+
+/* Lista de Participantes en la Ronda */
+.roster-card {
+    background: #ffffff;
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    margin-top: 20px;
+}
+
+.roster-title {
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--green-dark);
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.roster-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.roster-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 12px;
+    border-radius: var(--radius-sm);
+    background: var(--bg-aqua-light);
+    border: 1px solid var(--border-soft);
+    transition: all 0.2s ease;
+}
+
+.roster-row.is-active-turn {
+    background: #e8f5e9;
+    border-color: var(--green-apple);
+    box-shadow: 0 2px 8px rgba(94, 168, 50, 0.25);
+}
+
+.roster-row.is-opted-out {
+    opacity: 0.55;
+    background: #f1f3f5;
+    border-color: #dee2e6;
+    text-decoration: line-through;
+}
+
+.roster-row-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.roster-mate-count {
+    background: var(--green-apple);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 12px;
+}
+
+.roster-name {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--text-dark);
+}
+
+.roster-status-pill {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.06);
+}
+
+/* Termo Widget & Nivel de Agua */
+.termo-card-widget {
+    background: #ffffff;
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-md);
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    box-shadow: 0 2px 8px rgba(27, 67, 50, 0.05);
+}
+
+.termo-info-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+}
+
+.termo-icon-badge {
+    font-size: 1.8rem;
+    line-height: 1;
+}
+
+.termo-text-group {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+}
+
+.termo-title {
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: var(--green-dark);
+}
+
+.termo-gauge-bar {
+    width: 100%;
+    height: 10px;
+    background: #e2ece9;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-top: 4px;
+}
+
+.termo-gauge-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #52b788, #40916c);
+    border-radius: 5px;
+    transition: width 0.4s ease, background-color 0.4s ease;
+}
+
+.termo-gauge-fill.low {
+    background: linear-gradient(90deg, #e9c46a, #f4a261);
+}
+
+.termo-gauge-fill.empty {
+    background: linear-gradient(90deg, #e63946, #d90429);
+}
+
+.btn-refill-termo {
+    background: #ffffff;
+    color: var(--green-accent);
+    border: 1.5px solid var(--green-apple);
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.btn-refill-termo:hover {
+    background: var(--green-apple);
+    color: white;
+}
+
+/* Turno Especial del Cebador */
+.current-turn-card.is-cebador-turn {
+    border-color: #2d6a4f;
+    background: linear-gradient(180deg, #ffffff 0%, #f0fdf4 100%);
+    box-shadow: 0 10px 30px rgba(45, 106, 79, 0.22);
+}
+
+.current-turn-card.is-cebador-turn .turn-tag {
+    background: #2d6a4f;
+    color: #ffffff;
+}
+
+/* Modales */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 1000;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal-content {
+    background: #ffffff;
+    border-radius: var(--radius-lg);
+    width: 100%;
+    max-width: 500px;
+    max-height: 85vh;
+    overflow-y: auto;
+    padding: 24px;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
+    position: relative;
+    border: 2px solid var(--border-soft);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-soft);
+}
+
+.modal-title {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--green-dark);
+}
+
+.btn-close-modal {
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--text-muted);
+    cursor: pointer;
+}
+
+/* Notificación Flotante (Toast) */
+.toast-notice {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--green-dark);
+    color: #ffffff;
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    z-index: 2000;
+    transition: transform 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.toast-notice.show {
+    transform: translateX(-50%) translateY(0);
+}
+
+/* Responsividad para móviles pequeños */
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+        background-size: auto, auto, 160px;
+    }
+    
+    .screen {
+        padding: 18px 14px;
+    }
+    
+    .welcome-title {
+        font-size: 1.7rem;
+    }
+
+    .current-drinker-name {
+        font-size: 1.8rem;
+    }
+
+    .timer-digits {
+        font-size: 2.6rem;
+    }
+
+    .btn-apple {
+        font-size: 0.95rem;
+        padding: 13px 18px;
+    }
+
+    .participant-item {
+        grid-template-columns: 1fr;
+    }
+}
