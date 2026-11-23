@@ -184,6 +184,60 @@ body {
     box-shadow: 0 2px 8px rgba(94, 168, 50, 0.3);
 }
 
+/* Botón Celeste (Para diferenciar el estado de Mate Recibido / Terminé de Tomar) */
+.btn-celeste {
+    background: #00b4d8;
+    color: #ffffff !important;
+    border: none;
+    padding: 14px 22px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0, 180, 216, 0.4);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-decoration: none;
+    width: 100%;
+    touch-action: manipulation;
+}
+
+.btn-celeste:hover {
+    background: #0096c7;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 150, 199, 0.5);
+}
+
+.btn-celeste:active {
+    background: #0077b6;
+    transform: translateY(1px);
+    box-shadow: 0 2px 8px rgba(0, 150, 199, 0.35);
+}
+
+/* Botón para sumar participante durante la ronda activa */
+.btn-add-mid-round {
+    background: #ffffff;
+    color: var(--green-accent);
+    border: 1.5px solid var(--green-apple);
+    padding: 5px 12px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: all 0.2s ease;
+}
+
+.btn-add-mid-round:hover {
+    background: var(--green-apple);
+    color: #ffffff;
+}
+
 /* Botón Rojo: "No quiero más" */
 .btn-red-drop {
     background: var(--red-alert);

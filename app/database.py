@@ -67,35 +67,6 @@ def init_db():
     );
     """)
 
-    # Sembrar un usuario de demostración si la tabla está vacía
-    cursor.execute("SELECT COUNT(*) FROM users")
-    if cursor.fetchone()[0] == 0:
-        cursor.execute("""
-        INSERT INTO users (name, age, username, auth_provider)
-        VALUES ('Cebador Mateando', 30, 'cebador_pro', 'local')
-        """)
-        user_id = cursor.lastrowid
-
-        # Sembrar un grupo de ejemplo ("Los Compas del Mate")
-        cursor.execute("""
-        INSERT INTO saved_groups (user_id, group_name)
-        VALUES (?, 'Ronda de Amigos')
-        """, (user_id,))
-        group_id = cursor.lastrowid
-
-        members = [
-            ("Sebas (Cebador)", 1, 1, 0),
-            ("Jorge", 0, 1, 1),
-            ("Lucía", 0, 2, 2),  # Saltea 1 vuelta
-            ("Martín", 0, 1, 3),
-            ("Valeria", 0, 1, 4)
-        ]
-        for name, is_cebador, freq, pos in members:
-            cursor.execute("""
-            INSERT INTO group_members (group_id, name, is_cebador, frequency, position)
-            VALUES (?, ?, ?, ?, ?)
-            """, (group_id, name, is_cebador, freq, pos))
-
     conn.commit()
     conn.close()
 

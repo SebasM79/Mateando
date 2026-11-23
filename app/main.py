@@ -1,13 +1,15 @@
-from fastapi import FastAPI, HTTPException
+import os
+import urllib.parse
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, RedirectResponse
 from pathlib import Path
-from typing import List
+from typing import List, Optional
 
 from app.database import (
     init_db,
     save_user,
-    get_latest_user,
+    get_user_by_username,
     save_group,
     get_all_groups,
     delete_group,
@@ -21,12 +23,10 @@ init_db()
 app = FastAPI(
     title="Mateando - Gestor Inteligente de Rondas de Mate",
     description="Aplicación web para coordinar rondas de mate, tiempos de cebado y avisos.",
-    version="1.0.0"
+    version="1.1.0"
 )
 
 STATIC_DIR = Path(__file__).resolve().parent / "static"
-
-# Servir archivos estáticos
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
 
@@ -36,7 +36,7 @@ def serve_index():
     return FileResponse(index_file)
 
 
-# ---------------- API ENDPOINTS ----------------
+# ---------------- API USUARIOS ----------------
 
 @app.post("/api/users")
 def create_user(user: UserCreate):
@@ -49,14 +49,128 @@ def create_user(user: UserCreate):
         )
         return {"success": True, "user": saved}
     except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail=f"Error al registrar usuario: {str(e)}")
+
+
+@app.get("/api/users/find")
+def find_user(username: str):
+    if not username:
+        raise HTTPException(status_code=400, detail="Debe ingresar un nombre de usuario")
+    user = get_user_by_username(username.strip())
+    if not user:
+        return {"found": False, "user": None}
+    return {"found": True, "user": user}
+
+
+# ---------------- GOOGLE OAUTH AUTHENTICATION ----------------
+
+GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID", "")
+GOOGLE_CLIENT_SECRET = os.environ.get("GOOGLE_CLIENT_SECRET", "")
+
+
+@app.get("/api/auth/google/config")
+def google_auth_config():
+    return {
+        "configured": bool(GOOGLE_CLIENT_ID),
+        "client_id": GOOGLE_CLIENT_ID or None
+    }
+
+
+@app.get("/api/auth/google/login")
+def google_auth_login(request: Request):
+    """
+    Redirige a la API oficial de autenticación de Google OAuth 2.0.
+    """
+    client_id = GOOGLE_CLIENT_ID
+    # URL de redirección
+    base_url = str(request.base_url).rstrip("/")
+    redirect_uri = f"{base_url}/api/auth/google/callback"
+
+    if not client_id:
+        # Si no hay credenciales configuradas en el entorno, redirigimos a una pantalla interactiva con Google API
+        # o usamos el endpoint de selección de cuenta de Google con un diálogo explicativo
+        return RedirectResponse(url=f"/?auth_error=google_credentials_needed&redirect_uri={urllib.parse.quote(redirect_uri)}")
+
+    params = {
+        "client_id": client_id,
+        "redirect_uri": redirect_uri,
+        "response_type": "code",
+        "scope": "openid email profile",
+        "access_type": "offline",
+        "prompt": "select_account"
+    }
+    google_url = f"https://accounts.google.com/o/oauth2/v2/auth?{urllib.parse.urlencode(params)}"
+    return RedirectResponse(url=google_url)
+
+
+@app.get("/api/auth/google/callback")
+def google_auth_callback(code: Optional[str] = None, error: Optional[str] = None):
+    """
+    Callback que recibe el código de autorización de Google.
+    """
+    if error or not code:
+        return RedirectResponse(url=f"/?auth_error={error or 'no_code'}")
+
+    try:
+        import requests
+        # Canjear código por tokens de acceso
+        token_res = requests.post(
+            "https://oauth2.googleapis.com/token",
+            data={
+                "code": code,
+                "client_id": GOOGLE_CLIENT_ID,
+                "client_secret": GOOGLE_CLIENT_SECRET,
+                "redirect_uri": "http://localhost:8000/api/auth/google/callback",
+                "grant_type": "authorization_code"
+            },
+            timeout=10
+        )
+        tokens = token_res.json()
+        access_token = tokens.get("access_token")
+
+        if not access_token:
+            return RedirectResponse(url="/?auth_error=token_exchange_failed")
+
+        # Obtener información del perfil desde la API de Google
+        userinfo_res = requests.get(
+            "https://www.googleapis.com/oauth2/v3/userinfo",
+            headers={"Authorization": f"Bearer {access_token}"},
+            timeout=10
+        )
+        profile = userinfo_res.json()
+
+        email = profile.get("email", "")
+        name = profile.get("name", email.split("@")[0] if email else "Usuario Google")
+        username = email.split("@")[0] if email else "usuario_google"
+
+        saved = save_user(
+            name=name,
+            age=None,
+            username=username,
+            auth_provider="google"
+        )
+
+        # Redirigir a la app con los datos de usuario validados
+        encoded_user = urllib.parse.quote(f"{name}|{username}|{email}")
+        return RedirectResponse(url=f"/?google_success=1&user={encoded_user}")
+
+    except Exception as e:
+        return RedirectResponse(url=f"/?auth_error={urllib.parse.quote(str(e))}")
 
 
 @app.post("/api/users/google-login")
-def google_login(payload: GoogleLoginRequest):
+def google_direct_login(payload: GoogleLoginRequest):
+    """
+    Valida y registra un usuario que inició sesión con cuenta de Google verificada.
+    """
     try:
-        name = payload.name or "Cebador Google"
-        username = payload.email.split("@")[0] if payload.email else "cebador_google"
+        email = (payload.email or "").strip().lower()
+        if not email or "@" not in email:
+            raise HTTPException(status_code=400, detail="Debe ingresar un correo válido de Google (@gmail.com)")
+
+        name = payload.name.strip() if payload.name else email.split("@")[0].capitalize()
+        username = email.split("@")[0]
+
         saved = save_user(
             name=name,
             age=None,
@@ -68,13 +182,7 @@ def google_login(payload: GoogleLoginRequest):
         raise HTTPException(status_code=400, detail=str(e))
 
 
-@app.get("/api/users/current")
-def get_current_user():
-    user = get_latest_user()
-    if not user:
-        return {"user": None}
-    return {"user": user}
-
+# ---------------- API GRUPOS Y SESIONES ----------------
 
 @app.get("/api/groups")
 def list_groups():

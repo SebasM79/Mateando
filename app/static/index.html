@@ -17,9 +17,10 @@
                 <div class="brand-tagline">Rondas organizadas, mates perfectos</div>
             </div>
         </div>
-        <div id="user-chip" class="user-chip" style="display: none;">
+        <div id="user-chip" class="user-chip" style="display: none;" title="Haz clic para cambiar usuario">
             <div id="user-chip-avatar" class="user-chip-avatar">C</div>
             <span id="user-chip-name">Cebador</span>
+            <span class="user-chip-logout" id="btn-user-switch" title="Cambiar usuario">⇄</span>
         </div>
     </header>
 
@@ -50,6 +51,38 @@
         </section>
 
         <!-- ========================================== -->
+        <!-- PANTALLA: IDENTIFICACIÓN / LOGIN          -->
+        <!-- ========================================== -->
+        <section id="screen-login" class="screen">
+            <h2 class="welcome-title" style="text-align: center; margin-bottom: 6px;">¿Quién ceba hoy? 🧉</h2>
+            <p class="welcome-desc" style="text-align: center; margin-bottom: 20px;">
+                Ingresa tu nombre de usuario para cargar tu perfil y personalizar tu ronda.
+            </p>
+
+            <form id="form-login">
+                <div class="form-group">
+                    <label for="login-username" class="form-label">Nombre de usuario</label>
+                    <input type="text" id="login-username" class="form-input" placeholder="Ej: Sebas, Mari, o tu apodo" required autocomplete="username">
+                </div>
+
+                <div id="login-recent-users-container" style="display: none; margin-bottom: 16px;">
+                    <div style="font-size: 0.82rem; font-weight: 700; color: var(--green-dark); margin-bottom: 8px;">Usuarios recientes guardados en este equipo:</div>
+                    <div id="login-recent-chips" style="display: flex; flex-wrap: wrap; gap: 8px;"></div>
+                </div>
+
+                <button type="submit" class="btn-apple">
+                    <span>🧉 Entrar a Tomar Mate</span>
+                </button>
+            </form>
+
+            <div style="margin-top: 18px; text-align: center;">
+                <button type="button" id="btn-goto-register-from-login" class="btn-secondary" style="font-size: 0.88rem;">
+                    ¿Nuevo aquí? Crea tu usuario por primera vez
+                </button>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
         <!-- PANTALLA 2: REGISTRO / AUTENTICACIÓN       -->
         <!-- ========================================== -->
         <section id="screen-register" class="screen">
@@ -70,11 +103,11 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="reg-username" class="form-label">Nombre de usuario</label>
-                    <input type="text" id="reg-username" class="form-input" placeholder="Ej: cebador_master" required>
+                    <label for="reg-username" class="form-label">Nombre de usuario único</label>
+                    <input type="text" id="reg-username" class="form-input" placeholder="Ej: sebas_cebador" required>
                 </div>
 
-                <button type="submit" class="btn-apple" style="margin-top: 10px;">
+                <button type="submit" id="btn-submit-register" class="btn-apple" style="margin-top: 10px;">
                     <span>Crear Usuario y Continuar</span>
                 </button>
             </form>
@@ -90,6 +123,12 @@
                 </svg>
                 <span>Continuar con Google</span>
             </button>
+
+            <div style="margin-top: 14px; text-align: center;">
+                <button type="button" id="btn-goto-login-from-reg" class="btn-secondary" style="font-size: 0.88rem;">
+                    ¿Ya tienes usuario? Inicia sesión aquí
+                </button>
+            </div>
         </section>
 
         <!-- ========================================== -->
@@ -269,23 +308,25 @@
 
                 <!-- Botones Principales de Acción para el Cebador -->
                 <div class="cebada-actions">
+                    <!-- Estado 1: Verde manzana para entregar / tomar el mate -->
                     <button type="button" id="btn-deliver-mate" class="btn-apple btn-huge">
                         <span class="btn-text">Entregar mate a Jorge</span>
                     </button>
 
-                    <button type="button" id="btn-receive-mate" class="btn-apple btn-huge" style="display: none;">
+                    <!-- Estado 2: Celeste para recibir / terminar el mate -->
+                    <button type="button" id="btn-receive-mate" class="btn-celeste btn-huge" style="display: none;">
                         <span class="btn-text">Recibí mate</span>
                     </button>
                 </div>
             </div>
 
-            <!-- Lista de Participantes con Botón "No quiero más" -->
+            <!-- Lista de Participantes con Botón "No quiero más" y "+ Sumar a la ronda" -->
             <div class="roster-card">
                 <div class="roster-title">
                     <span>Participantes en esta Ronda</span>
-                    <small style="font-weight: 500; font-size: 0.8rem; color: var(--text-muted);">
-                        Toca "No quiero más" para anularlo
-                    </small>
+                    <button type="button" id="btn-open-add-mid-round" class="btn-add-mid-round">
+                        ➕ Sumar a la ronda
+                    </button>
                 </div>
                 <ul id="active-roster-list" class="roster-list">
                     <!-- Se genera dinámicamente con JS -->
@@ -301,6 +342,86 @@
         </section>
 
     </main>
+
+    <!-- ========================================== -->
+    <!-- MODAL: SUMAR PARTICIPANTE A MITAD DE RONDA  -->
+    <!-- ========================================== -->
+    <div id="modal-add-mid-round" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">➕ Sumar participante a la ronda</h3>
+                <button type="button" id="btn-close-add-mid-round" class="btn-close-modal">&times;</button>
+            </div>
+            <form id="form-add-mid-round">
+                <div class="form-group">
+                    <label for="mid-name" class="form-label">Nombre del nuevo participante</label>
+                    <input type="text" id="mid-name" class="form-input" placeholder="Ej: Lucas" required autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="mid-frequency" class="form-label">Forma de tomar mate</label>
+                    <select id="mid-frequency" class="form-select">
+                        <option value="1" selected>Toma todas las rondas</option>
+                        <option value="2">Saltea 1 vuelta (toma cada 2)</option>
+                        <option value="3">Saltea 2 vueltas (toma cada 3)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label style="display: flex; align-items: center; gap: 8px; font-size: 0.9rem; font-weight: 600; color: var(--green-dark); cursor: pointer;">
+                        <input type="checkbox" id="mid-drink-now" checked style="accent-color: var(--green-apple); width: 18px; height: 18px;">
+                        <span>¿Toma mate en esta misma vuelta?</span>
+                    </label>
+                </div>
+                <button type="submit" class="btn-apple" style="margin-top: 10px;">
+                    <span>¡Sumar a la Ronda! 🧉</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- MODAL: GOOGLE OAUTH IDENTIFICATION         -->
+    <!-- ========================================== -->
+    <div id="modal-google-auth" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" style="display: flex; align-items: center; gap: 8px;">
+                    <svg style="width: 24px; height: 24px;" viewBox="0 0 48 48">
+                        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                    </svg>
+                    <span>Conectar con Google</span>
+                </h3>
+                <button type="button" id="btn-close-google-modal" class="btn-close-modal">&times;</button>
+            </div>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 16px;">
+                Valida tu usuario con la API de Google Identity para guardar tus rondas:
+            </p>
+
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+                <a href="/api/auth/google/login" id="btn-google-oauth-link" class="btn-google" style="text-decoration: none;">
+                    <span>🌐 Iniciar sesión con Google Accounts</span>
+                </a>
+
+                <div class="auth-divider">O VALIDA TU CORREO DE GOOGLE DIRECTAMENTE</div>
+
+                <form id="form-google-direct">
+                    <div class="form-group">
+                        <label for="google-direct-email" class="form-label">Correo de Google (@gmail.com)</label>
+                        <input type="email" id="google-direct-email" class="form-input" placeholder="tu.nombre@gmail.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="google-direct-name" class="form-label">Tu nombre visible</label>
+                        <input type="text" id="google-direct-name" class="form-input" placeholder="Ej: Sebas">
+                    </div>
+                    <button type="submit" class="btn-apple">
+                        <span>Validar Cuenta de Google</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <!-- ========================================== -->
     <!-- MODAL: RONDAS GUARDADAS                    -->
